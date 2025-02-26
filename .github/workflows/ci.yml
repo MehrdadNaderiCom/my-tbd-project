@@ -1,25 +1,25 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - trunk  # This will trigger the CI pipeline when code is pushed to the trunk branch
+      - trunk  # This will trigger the pipeline when code is pushed to the trunk branch
 
 jobs:
-  test:
+  build-and-deploy:
     runs-on: ubuntu-latest  # The environment to run the job
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2  # This checks out your code from the GitHub repository
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Build Project (optional)
+        run: |
+          # This step is optional; you can build your project if you have build tools like React or Angular.
+          echo "Building project..."
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          node-version: '14'  # Specifies which version of Node.js to use
-
-      - name: Install dependencies
-        run: npm install  # Installs all dependencies defined in package.json
-
-      - name: Run tests
-        run: npm test  # Runs your tests using Jest
+          branch: gh-pages  # The branch to deploy to GitHub Pages
+          folder: ./        # The folder containing the project files (in our case, it's the root folder)
